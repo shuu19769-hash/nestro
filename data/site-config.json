@@ -1,0 +1,10 @@
+{
+  "announcement":"Complimentary design consultation · Delivery across the UAE",
+  "nav":[
+    {"label":"Shop","href":"/shop"},{"label":"Collections","href":"/collections"},{"label":"Projects","href":"/projects"},{"label":"Interior Solutions","href":"/interior-solutions"},{"label":"Custom Furniture","href":"/custom-furniture"},{"label":"About","href":"/about"},{"label":"Journal","href":"/journal"},{"label":"Contact","href":"/contact"}
+  ],
+  "locations":[
+    {"city":"Dubai","address":"Al Quoz · By appointment"},{"city":"Abu Dhabi","address":"Design consultations · By appointment"},{"city":"Sharjah","address":"Home visits available"}
+  ],
+  "hours":"Saturday–Thursday · 8:00 AM–9:00 PM"
+}
