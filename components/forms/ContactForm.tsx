@@ -2,7 +2,6 @@
 import { Check } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { CONTACT } from "@/lib/constants";
-import { reportGoogleAdsContactConversion } from "@/components/analytics/GoogleAdsTag";
 import { track } from "@/lib/analytics";
 
 export function ContactForm({ locale = "en" }: { locale?: "en" | "ar" }) {
@@ -34,7 +33,6 @@ export function ContactForm({ locale = "en" }: { locale?: "en" | "ar" }) {
         if (!response.ok) throw new Error();
       }
       track("consultation", { source: "contact_form", locale });
-      reportGoogleAdsContactConversion();
       setSent(true);
     } catch {
       setError(

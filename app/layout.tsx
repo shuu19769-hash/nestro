@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Manrope, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
-import { GoogleAdsTag } from "@/components/analytics/GoogleAdsTag";
+import { GoogleTagManagerBody, GoogleTagManagerHead } from "@/components/analytics/GoogleTagManager";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { DeferredOverlays } from "@/components/modals/DeferredOverlays";
@@ -31,9 +31,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable} ${arabic.variable}`}>
       <head>
-        <GoogleAdsTag />
+        <GoogleTagManagerHead />
       </head>
       <body>
+        <GoogleTagManagerBody />
         <script dangerouslySetInnerHTML={{ __html: bootstrap }} />
         <a href="#main-content" className="fixed start-3 top-3 z-[100] -translate-y-24 rounded-lg bg-charcoal px-4 py-3 text-sm text-white focus:translate-y-0">
           <span className="ltr-only">Skip to content</span>
