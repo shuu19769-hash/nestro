@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
-import { ContactConversionScript } from "@/components/analytics/ContactConversionScript";
 import { ContactForm } from "@/components/forms/ContactForm";
 import site from "@/data/site-config.json";
 import { CONTACT, whatsappUrl } from "@/lib/constants";
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <ContactConversionScript />
       <section className="container-site pb-12 pt-16 md:pb-20 md:pt-24">
         <span className="eyebrow">Contact NESTRO</span>
         <h1 className="display mt-6 max-w-5xl">

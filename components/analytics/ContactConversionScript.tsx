@@ -1,4 +1,4 @@
-import Script from "next/script";
+import { googleAdsConversionSendTo } from "@/components/analytics/GoogleAdsTag";
 
 const contactConversion = `function gtag_report_conversion(url) {
   var callback = function () {
@@ -7,7 +7,7 @@ const contactConversion = `function gtag_report_conversion(url) {
     }
   };
   gtag('event', 'conversion', {
-      'send_to': 'AW-18417447403/ZyElCOax0fAcEOvjj85E',
+      'send_to': '${googleAdsConversionSendTo}',
       'event_callback': callback
   });
   return false;
@@ -15,10 +15,6 @@ const contactConversion = `function gtag_report_conversion(url) {
 
 export function ContactConversionScript() {
   return (
-    <Script
-      id="google-ads-contact-conversion"
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: contactConversion }}
-    />
+    <script id="google-ads-contact-conversion" dangerouslySetInnerHTML={{ __html: contactConversion }} />
   );
 }

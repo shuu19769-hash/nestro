@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Manrope, Noto_Sans_Arabic } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
+import { GoogleAdsTag } from "@/components/analytics/GoogleAdsTag";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { DeferredOverlays } from "@/components/modals/DeferredOverlays";
@@ -28,15 +28,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   const organization = { "@context": "https://schema.org", "@type": "Organization", name: "NESTRO", url: CONTACT.siteUrl, description: "Premium furniture and interior lifestyle brand serving the UAE." };
   const bootstrap=`(()=>{const a=location.pathname==='/ar'||location.pathname.startsWith('/ar/');document.documentElement.lang=a?'ar':'en';document.documentElement.dir=a?'rtl':'ltr';})()`;
-  const googleAds=`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'AW-18417447403');`;
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${manrope.variable} ${arabic.variable}`}>
+      <head>
+        <GoogleAdsTag />
+      </head>
       <body>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18417447403" strategy="beforeInteractive" />
-        <Script id="google-ads-tag" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: googleAds }} />
         <script dangerouslySetInnerHTML={{ __html: bootstrap }} />
         <a href="#main-content" className="fixed start-3 top-3 z-[100] -translate-y-24 rounded-lg bg-charcoal px-4 py-3 text-sm text-white focus:translate-y-0">
           <span className="ltr-only">Skip to content</span>
