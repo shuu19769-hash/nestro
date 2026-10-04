@@ -278,7 +278,7 @@ function Consultation({
           sourceUrl: location.href,
           utmSource:
             new URLSearchParams(location.search).get("utm_source") || "",
-          company: String(data.get("company") || ""),
+          nestro_hp: String(data.get("nestro_hp") || ""),
         });
         setSent(true);
       } catch {
@@ -332,11 +332,11 @@ function Consultation({
             <form className="mt-7 grid gap-4 sm:grid-cols-2" onSubmit={submit}>
               <input
                 type="text"
-                name="company"
+                name="nestro_hp"
                 tabIndex={-1}
-                autoComplete="off"
+                autoComplete="new-password"
                 className="absolute -left-[9999px] h-px w-px opacity-0"
-                aria-hidden
+                aria-hidden="true"
               />
               <label className="text-sm">
                 {ar ? "الاسم" : "Name"}

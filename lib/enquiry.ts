@@ -10,8 +10,8 @@ export type EnquiryPayload = {
   source?: string;
   sourceUrl?: string;
   utmSource?: string;
-  /** Honeypot — must stay empty for real submissions */
-  company?: string;
+  /** Honeypot — must stay empty (never use name="company"; browsers autofill it) */
+  nestro_hp?: string;
 };
 
 export type EnquiryLocale = "en" | "ar";

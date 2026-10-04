@@ -28,7 +28,7 @@ export function ContactForm({ locale = "en" }: { locale?: "en" | "ar" }) {
         message: String(data.get("message") || ""),
         language: locale,
         source: "contact_form",
-        company: String(data.get("company") || ""),
+        nestro_hp: String(data.get("nestro_hp") || ""),
       });
       track("consultation", { source: "contact_form", locale });
       setSent(true);
@@ -84,11 +84,11 @@ export function ContactForm({ locale = "en" }: { locale?: "en" | "ar" }) {
       <input type="hidden" name="language" value={locale} />
       <input
         type="text"
-        name="company"
+        name="nestro_hp"
         tabIndex={-1}
-        autoComplete="off"
+        autoComplete="new-password"
         className="absolute -left-[9999px] h-px w-px opacity-0"
-        aria-hidden
+        aria-hidden="true"
       />
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="text-sm font-medium">

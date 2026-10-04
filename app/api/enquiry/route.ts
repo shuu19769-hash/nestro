@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 function isValidPayload(body: unknown): body is EnquiryPayload {
   if (!body || typeof body !== "object") return false;
   const p = body as EnquiryPayload;
-  if (p.company?.trim()) return false;
+  if (p.nestro_hp?.trim()) return false;
   const email = p.email?.trim() || "";
   const name = p.name?.trim() || "";
   const phone = p.phone?.trim() || "";
