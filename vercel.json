@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/googlefe16f7a9176936d4.html",
+      "destination": "/googlefe16f7a9176936d4.txt"
+    }
+  ],
+  "redirects": [
+    {
+      "has": [{ "type": "host", "value": "nestro.ae" }],
+      "source": "/:path*",
+      "destination": "https://www.nestro.ae/:path*",
+      "permanent": true
+    }
+  ]
+}
