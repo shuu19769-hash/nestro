@@ -19,12 +19,12 @@ export type EnquiryLocale = "en" | "ar";
 export function mailtoHref(locale: EnquiryLocale = "en"): string {
   const subject =
     locale === "ar"
-      ? "استفسار مشروع جديد — NESTRO"
-      : "NESTRO project enquiry";
+      ? "استفسار مشروع — NESTRO"
+      : "NESTRO — Project enquiry";
   const body =
     locale === "ar"
-      ? "مرحباً فريق NESTRO،\n\nأود الاستفسار عن مشروع.\n\nالخدمة: \nالموقع في الإمارات: \nالتفاصيل: \n\nمع الشكر،\n"
-      : "Hello NESTRO team,\n\nI would like to enquire about a project.\n\nService: \nUAE location: \nDetails: \n\nThank you,\n";
+      ? "مرحباً فريق NESTRO،\r\n\r\nأود الاستفسار عن مشروع.\r\n\r\nالخدمة:\r\nالموقع في الإمارات:\r\nالتفاصيل:\r\n\r\nمع الشكر،\r\n"
+      : "Hello NESTRO team,\r\n\r\nI would like to enquire about a project.\r\n\r\nService:\r\nUAE location:\r\nDetails:\r\n\r\nThank you,\r\n";
   return buildMailto({
     email: CONTACT.email,
     subject,
@@ -41,10 +41,8 @@ export function buildMailto({
   subject: string;
   body: string;
 }): string {
-  const params = new URLSearchParams();
-  params.set("subject", subject);
-  params.set("body", body);
-  return `mailto:${email}?${params.toString()}`;
+  // encodeURIComponent uses %20 for spaces (not "+"), which mobile mail clients decode correctly.
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 /** Submit enquiry via site API (better deliverability than posting to Web3Forms from the browser). */

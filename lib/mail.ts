@@ -56,34 +56,91 @@ function getTransport(config: SmtpConfig): Transporter {
   return cachedTransport;
 }
 
+function formatServiceLabel(slug?: string): string {
+  if (!slug?.trim()) return "—";
+  return slug
+    .trim()
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export function formatEnquiryPlainText(payload: EnquiryPayload): string {
+  const service = formatServiceLabel(payload.service);
   const lines = [
-    `Name: ${payload.name}`,
-    `Phone: ${payload.phone}`,
-    `Email: ${payload.email}`,
+    "NESTRO — New website enquiry",
+    "────────────────────────────",
+    "",
+    `Name:     ${payload.name.trim()}`,
+    `Phone:    ${payload.phone.trim()}`,
+    `Email:    ${payload.email.trim()}`,
+    `Service:  ${service}`,
   ];
-  if (payload.service) lines.push(`Service: ${payload.service}`);
   if (payload.language) lines.push(`Language: ${payload.language}`);
-  if (payload.source) lines.push(`Source: ${payload.source}`);
-  if (payload.sourceUrl) lines.push(`Page: ${payload.sourceUrl}`);
-  if (payload.utmSource) lines.push(`UTM: ${payload.utmSource}`);
-  lines.push("", payload.message?.trim() || "(No message provided)");
+  if (payload.sourceUrl) lines.push(`Page:     ${payload.sourceUrl}`);
+  lines.push(
+    "",
+    "Message",
+    "───────",
+    payload.message?.trim() || "(No message provided)",
+    "",
+    "Reply to this email to respond directly to the customer.",
+  );
   return lines.join("\n");
 }
 
 export function enquirySubject(payload: EnquiryPayload): string {
-  const service = payload.service?.trim();
-  const label = service ? ` — ${service}` : "";
-  return `[NESTRO Website] Enquiry from ${payload.name.trim()}${label}`;
+  const service = formatServiceLabel(payload.service);
+  return `[NESTRO] New enquiry — ${payload.name.trim()} (${service})`;
 }
 
 function formatEnquiryHtml(payload: EnquiryPayload): string {
-  const text = formatEnquiryPlainText(payload)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\n/g, "<br>");
-  return `<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;line-height:1.5;color:#111">${text}</body></html>`;
+  const service = formatServiceLabel(payload.service);
+  const message = escapeHtml(
+    payload.message?.trim() || "(No message provided)",
+  ).replace(/\r?\n/g, "<br>");
+
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:10px 0;border-bottom:1px solid #eee;color:#666;font-size:13px;width:120px;vertical-align:top">${escapeHtml(label)}</td><td style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;color:#111">${escapeHtml(value)}</td></tr>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f1ea;font-family:Manrope,Segoe UI,sans-serif">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:32px 16px">
+    <tr><td align="center">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.06)">
+        <tr><td style="background:#1c1c1c;padding:28px 32px">
+          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#c79538;font-weight:700">NESTRO</p>
+          <h1 style="margin:10px 0 0;font-size:22px;font-weight:600;color:#fff;line-height:1.3">New website enquiry</h1>
+        </td></tr>
+        <tr><td style="padding:28px 32px 8px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            ${row("Name", payload.name.trim())}
+            ${row("Phone", payload.phone.trim())}
+            ${row("Email", payload.email.trim())}
+            ${row("Service", service)}
+            ${payload.sourceUrl ? row("Page", payload.sourceUrl) : ""}
+          </table>
+        </td></tr>
+        <tr><td style="padding:16px 32px 32px">
+          <p style="margin:0 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#888">Message</p>
+          <div style="padding:16px;background:#faf8f4;border-radius:12px;font-size:14px;line-height:1.6;color:#222">${message}</div>
+          <p style="margin:24px 0 0;font-size:12px;color:#888">Reply to this email to reach the customer directly.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
 }
 
 export async function verifySmtpConnection(): Promise<{
